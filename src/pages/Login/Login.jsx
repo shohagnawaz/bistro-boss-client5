@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   loadCaptchaEnginge,
   LoadCanvasTemplate,
@@ -6,10 +6,10 @@ import {
 } from "react-simple-captcha";
 import { AuthContext } from "../../providers/AuthProvider";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Login = () => {
 
-    const captchaRef = useRef(null);
     const [disabled, setDisabled] = useState(true);
 
     const { signIn } = useContext(AuthContext);
@@ -28,11 +28,28 @@ const Login = () => {
       .then(result => {
         const user = result.user;
         console.log(user);
+        Swal.fire({
+          title: "User login successfully",
+          showClass: {
+            popup: `
+              animate__animated
+              animate__fadeInUp
+              animate__faster
+            `
+          },
+          hideClass: {
+            popup: `
+              animate__animated
+              animate__fadeOutDown
+              animate__faster
+            `
+          }
+        });
       })
   };
 
-  const handleValidateCaptcha = () => {
-    const user_captcha_value = captchaRef.current.value;
+  const handleValidateCaptcha = (e) => {
+    const user_captcha_value = e.target.value;
     if (validateCaptcha(user_captcha_value)) {
         setDisabled(false)
     }
@@ -77,13 +94,12 @@ const Login = () => {
                     <LoadCanvasTemplate />
                 </label>
                 <input
+                  onBlur={handleValidateCaptcha}
                   type="text"
-                  ref={captchaRef}
                   name="captcha"
                   className="input"
                   placeholder="type the captcha above"
                 />
-                <button onClick={handleValidateCaptcha} className="btn btn-outline btn-xs mt-2">Validate</button>
               </div>
               <input
                 disabled={disabled}
@@ -93,7 +109,7 @@ const Login = () => {
               />
             </div>
           </form>
-          <p className="p-6"><small>New here?<Link to={"/signup"}> Create a new account.</Link></small></p>
+          <p className="p-6"><small>New here?<Link to={"/signup"}> Sign Up</Link></small></p>
         </div>
       </div>
     </div>
