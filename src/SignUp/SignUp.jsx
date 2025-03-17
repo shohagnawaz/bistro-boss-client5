@@ -1,17 +1,15 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../providers/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const SignUp = () => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
+
+  const { register, handleSubmit, reset, formState: { errors }, } = useForm();
   const { createUser, updateUserProfile } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const onSubmit = (data) => {
     console.log(data);
     createUser(data.email, data.password)
@@ -29,6 +27,7 @@ const SignUp = () => {
                 showConfirmButton: false,
                 timer: 1500
               });
+              navigate("/");
             })
             .catch(error => console.log(error))
         })
@@ -55,11 +54,23 @@ const SignUp = () => {
                   {...register("name", { required: true })}
                   name="name"
                   className="input"
-                  placeholder="Email"
+                  placeholder="Name"
                 />
                 {errors.name && (
                   <span className="text-red-600">Name is required</span>
                 )}
+
+                <label className="fieldset-label">Photo URL</label>
+                <input
+                  type="text"
+                  {...register("photoURL", { required: true })}
+                  className="input"
+                  placeholder="Photo URL"
+                />
+                {errors.photoURL && (
+                  <span className="text-red-600">Photo URL is required</span>
+                )}
+
                 <label className="fieldset-label">Email</label>
                 <input
                   type="email"
@@ -71,6 +82,7 @@ const SignUp = () => {
                 {errors.email && (
                   <span className="text-red-600">Email is required</span>
                 )}
+
                 <label className="fieldset-label">Password</label>
                 <input
                   type="password"
