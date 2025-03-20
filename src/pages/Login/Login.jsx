@@ -7,6 +7,7 @@ import {
 import { AuthContext } from "../../providers/AuthProvider";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import SocialLogin from "../../components/SocialLogin/SocialLogin";
 
 const Login = () => {
 
@@ -114,6 +115,9 @@ const Login = () => {
                 value="login"
               />
             </div>
+            {/* With Google SignIn */}
+            <div className="divider">OR</div>
+            <SocialLogin></SocialLogin>
           </form>
           <p className="p-6"><small>New here?<Link to={"/signup"}> Sign Up</Link></small></p>
         </div>
